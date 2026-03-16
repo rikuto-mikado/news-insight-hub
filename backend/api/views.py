@@ -1,10 +1,10 @@
-from rest_framework import viewssets
+from rest_framework import viewsets
 from .models import NewsArticle
 from .serializers import NewsArticleSerializer
 
 
 # Create your views here.
-class NewsArticleViewSet(viewssets.ReadOnlyModelViewSet):
+class NewsArticleViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ViewSet for retrieving news articles fetched from external sources.
     Supports list and detail views (read-only).
