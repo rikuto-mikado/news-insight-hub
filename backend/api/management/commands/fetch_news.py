@@ -7,6 +7,10 @@ from api.models import NewsArticle
 class Command(BaseCommand):
     help = "Fetch news articles from NewsAPI and save into the database"
 
+    def add_arguments(self, parser):
+        # If --category is omitted, fetch without category filter
+        parser.add_argument("--category", type=str, default="")
+
     def handle(self, *args, **kwargs):
         api_key = os.environ.get("NEWS_API_KEY")
         if not api_key:
@@ -16,6 +20,7 @@ class Command(BaseCommand):
         url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={api_key}"
         response = requests.get(url)
         articles = response.json().get("articles", [])
+        category = kwargs.get("category", "")
         count = 0
 
         for article in articles:

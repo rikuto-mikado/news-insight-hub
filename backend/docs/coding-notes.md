@@ -43,3 +43,20 @@ os.environ.get("DB_HOST", "localhost")
 ```
 
 Useful for running the same code in Docker (where DB_HOST=db) and locally (where DB_HOST=localhost).
+
+---
+
+## Django Migrations
+
+When you change a model (add/remove/modify a field), the database table does NOT update automatically. You must run migrations to sync the model with the database.
+
+```bash
+# Step 1: Generate a migration file from model changes
+docker compose exec backend python manage.py makemigrations
+
+# Step 2: Apply the migration to the database
+docker compose exec backend python manage.py migrate
+```
+
+- Skipping this will cause errors when Django tries to access a column that doesn't exist in the DB.
+- Always run both commands after editing `models.py`.

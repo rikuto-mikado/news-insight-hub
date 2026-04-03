@@ -9,6 +9,7 @@ class NewsArticle(models.Model):
     source_name = models.CharField(max_length=100)
     author = models.CharField(max_length=250, blank=True, null=True)
     published_date = models.DateTimeField()
+    category = models.CharField(max_length=100, blank=True, default="")
 
     def __str__(self):
         return self.title
