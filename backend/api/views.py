@@ -1,6 +1,7 @@
 from rest_framework import viewsets, filters
 from .models import NewsArticle
 from .serializers import NewsArticleSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class NewsArticleViewSet(viewsets.ReadOnlyModelViewSet):
@@ -11,5 +12,6 @@ class NewsArticleViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = NewsArticle.objects.all()
     serializer_class = NewsArticleSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ["title", "source_name", "content"]
+    filterset_fields = ["category"]

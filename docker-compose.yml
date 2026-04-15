@@ -14,7 +14,7 @@ services:
 
   backend:
     build: ./backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: sh -c "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ./backend:/app
     ports:
@@ -25,6 +25,33 @@ services:
       DATABASE_URL: ${DATABASE_URL}
     depends_on:
       - db
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: ./backend
+    command: sh -c "celery -A config worker -l info"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+
+  celery-beat:
+    build: ./backend
+    command: sh -c "celery -A config beat -l info"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
 
   frontend:
     build: ./frontend

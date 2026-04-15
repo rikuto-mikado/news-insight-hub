@@ -40,9 +40,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    "django_filters",
     # here is where you add your apps
+    "drf_spectacular",
     "api",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -129,3 +135,12 @@ STATIC_URL = "static/"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_BEAT_SCHEDULE = {
+    "fetch-news-every-hour": {
+        "task": "api.tasks.fetch_news_task",
+        # every hour (3600 seconds)
+        "schedule": 3600.0,
+    },
+}

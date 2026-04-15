@@ -17,10 +17,12 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("NEWS_API_KEY is not set."))
             return
 
+        category = kwargs.get("category", "")
         url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={api_key}"
+        if category:
+            url += f"&category={category}"
         response = requests.get(url)
         articles = response.json().get("articles", [])
-        category = kwargs.get("category", "")
         count = 0
 
         for article in articles:
@@ -33,6 +35,7 @@ class Command(BaseCommand):
                     "source_name": article["source"]["name"],
                     "author": article.get("author", ""),
                     "published_date": article["publishedAt"],
+                    "category": category,
                 },
             )
             if created:

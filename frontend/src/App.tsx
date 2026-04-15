@@ -6,34 +6,51 @@ interface Article {
   content: string;
   url: string;
   source_name: string;
+  category: string;
   published_date: string;
 }
 
 function App() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [query, setQuery] = useState(''); 
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/articles/?search=${query}`)
+    fetch(`http://localhost:8000/api/articles/?search=${query}&category=${category}`)
     .then(res => res.json())
     .then(data => setArticles(data))
     .catch(err => console.error("Error fetching data:", err));
-  }, [query]);
+  }, [query, category]);
 
   return(
     <>
       <div className="min-h-screen bg-gray-100 p-8">
         <header className="mb-12">
-          <h1 className="text-4xl font-bold text-state-900">News DashBoard</h1>
+          <h1 className="text-4xl font-bold text-slate-900">News DashBoard</h1>
         </header>
 
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          className="w-full max-w-md px-4 py-2 border border-slate-500 rounded-lg mb-8"
-        />
+        <div className="flex gap-4 mb-8">
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            className="w-full max-w-md px-4 py-2 border border-slate-500 rounded-lg"
+          />
+          <select
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            className="px-4 py-2 border border-slate-500 rounded-lg"
+          >
+            <option value="">All Categories</option>
+            <option value="technology">Technology</option>
+            <option value="business">Business</option>
+            <option value="sports">Sports</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="health">Health</option>
+            <option value="science">Science</option>
+          </select>
+        </div>
 
         <div className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map(article => (
@@ -42,7 +59,7 @@ function App() {
                 {article.source_name}
               </h2>
               <h3 className="text-base font-semibold text-slate-800 mb-2">{article.title}</h3>
-              <p className="text-state-600 text-sm mb-4 line-clamp-3">
+              <p className="text-slate-600 text-sm mb-4 line-clamp-3">
                 {article.content}
               </p>
               <div className="flex justify-between items-center mt-auto">

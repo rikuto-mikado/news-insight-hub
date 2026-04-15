@@ -58,6 +58,10 @@ dist-ssr/
 # Docker
 postgres_data/
 
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
 # Testing
 .coverage
 htmlcov/

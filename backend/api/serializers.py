@@ -11,6 +11,7 @@ class NewsArticleSerializer(serializers.ModelSerializer):
             "content",
             "url",
             "source_name",
+            "category",
             "author",
             "published_date",
         ]
