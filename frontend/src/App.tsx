@@ -26,7 +26,7 @@ function App() {
     <>
       <div className="min-h-screen bg-gray-100 p-8">
         <header className="mb-12">
-          <h1 className="text-4xl font-bold text-slate-900">News DashBoard</h1>
+          <h1 onClick={() => window.location.reload()} className="text-4xl font-bold text-slate-900">News DashBoard</h1>
         </header>
 
         <div className="flex gap-4 mb-8">
